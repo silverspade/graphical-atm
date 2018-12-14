@@ -39,7 +39,7 @@ public class LoginView extends JPanel implements ActionListener {
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
 	
 	/*
-	 * Initialies the LoginView components.
+	 * Initializes the LoginView components.
 	 */
 	
 	private void initialize() {
@@ -52,7 +52,7 @@ public class LoginView extends JPanel implements ActionListener {
 	}
 	
 	/*
-	 * Initialies the components needed for the account number textfield.
+	 * Initializes the components needed for the account number textfield.
 	 */
 	
 	private void initAccountField() {

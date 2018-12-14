@@ -29,7 +29,7 @@ public class ATM extends JFrame {
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
 
 	/*
-	 * Initialies the ATM components.
+	 * Initializes the ATM components.
 	 */
 	
 	private void initialize() {		
