@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import controller.ViewManager;
@@ -13,6 +14,7 @@ import controller.ViewManager;
 public class HomeView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
+	private JButton logoutButton;
 	
 	/**
 	 * Constructs an instance (or objects) of the HomeView class.
@@ -39,6 +41,8 @@ public class HomeView extends JPanel implements ActionListener {
 		//
 		// this is a placeholder for this view and should be removed once you start
 		// building the HomeView.
+		this.setLayout(null);
+		initLogoutButton();
 		
 		this.add(new javax.swing.JLabel("HomeView", javax.swing.SwingConstants.CENTER));
 		
@@ -49,6 +53,14 @@ public class HomeView extends JPanel implements ActionListener {
 		//
 		// feel free to use my layout in LoginView as an example for laying out and
 		// positioning your components.
+	}
+	
+	private void initLogoutButton() {	
+		logoutButton = new JButton("Logout");
+		logoutButton.setBounds(205, 180, 200, 35);
+		logoutButton.addActionListener(this);
+		
+		this.add(logoutButton);
 	}
 	
 	/*
@@ -72,7 +84,7 @@ public class HomeView extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		Object source = e.getSource();
 		// TODO
 		//
 		// this is where you'll setup your action listener, which is responsible for
@@ -80,5 +92,9 @@ public class HomeView extends JPanel implements ActionListener {
 		// user clicking a button, typing in a textfield, etc.).
 		//
 		// feel free to use my action listener in LoginView.java as an example.
+		if (source.equals(logoutButton)) {
+			manager.switchTo(ATM.LOGIN_VIEW);
+			//Make the BankAccount null
+		}
 	}
 }
