@@ -273,6 +273,7 @@ public class CreateView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 			case SUBMIT:
+				//POSSIBLY ADD IN A CHECKING METHOD
 				//long accountNumber = generatedAccountNumber++;
 				//String result = accountNumber + String.format("%-4s", pinField.getPassword()) + String.format("%-15.2f", 0) + String.format("%-20s", lastNameField.getText()) + String.format("%-15s", firstNameField.getText()) + String.format("%-8s", dobField.getText()) /*+ String.format("%-10s", phoneField.getText())*/ + String.format("%-30s", streetField.getText()) + String.format("%-30s", cityField.getText()) + String.format("%-2s", stateField.getText()) + String.format("%-5s", zipField.getText()) + "Y";
 				//manager.login(String.valueOf(accountNumber), pinField.getPassword());
