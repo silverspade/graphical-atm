@@ -95,6 +95,9 @@ public class LoginView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(accountField);
+		
+		//TRY THIS OUT WHEN THE DERBY IS FIXED
+		//this.removeAll();
 	}
 	
 	/*
@@ -112,6 +115,9 @@ public class LoginView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(pinField);
+		
+		//TRY THIS OUT WHEN THE DERBY IS FIXED
+		//this.removeAll();
 	}
 	
 	/*
@@ -204,6 +210,11 @@ public class LoginView extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+		if (source.equals(powerButton)) {
+			manager.shutdown();
+		}
+		
 		switch (e.getActionCommand()) {
 			case LOGIN: manager.login(accountField.getText(), pinField.getPassword()); break;
 			case CREATE: manager.switchTo(ATM.CREATE_VIEW); break;

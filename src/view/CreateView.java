@@ -25,23 +25,26 @@ public class CreateView extends JPanel implements ActionListener {
 	private ViewManager manager;		// manages interactions between the views, model, and database
 	
 	private final static String SUBMIT = "Submit";
+	private final static String CANCEL = "Cancel";
 	
 	private static long generatedAccountNumber = 100000009L;
 	
 	private JPasswordField pinField;
 	private JTextField lastNameField;
 	private JTextField firstNameField;
-	private JTextField dobField;
+	private JComboBox daysField;
+	private JComboBox monthsField;
+	private JComboBox yearsField;
 	private JTextField firstPhone;
 	private JTextField secondPhone;
 	private JTextField thirdPhone;
 	private JTextField streetField;
 	private JTextField cityField;
-	private JTextField stateField;
+	private JComboBox stateField;
 	private JTextField zipField;
 	
 	private JButton submitButton;
-
+	private JButton cancelButton;
 	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -64,11 +67,6 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initialize() {
 		this.setLayout(null);
-		// TODO
-		//
-		// this is a placeholder for this view and should be removed once you start
-		// building the CreateView.
-			
 		//Account number, balance, and status were omitted
 		initPinField();
 		initLastNameField();
@@ -80,14 +78,7 @@ public class CreateView extends JPanel implements ActionListener {
 		initStateField();
 		initZipField();
 		initSubmitButton();
-		
-		// TODO
-		//
-		// this is where you should build the CreateView (i.e., all the components that
-		// allow the user to enter his or her information and create a new account).
-		//
-		// feel free to use my layout in LoginView as an example for laying out and
-		// positioning your components.
+		initCancelButton();
 	}
 	
 	/*
@@ -104,12 +95,12 @@ public class CreateView extends JPanel implements ActionListener {
 	private void initPinField() {
 		JLabel label = new JLabel("PIN", SwingConstants.LEFT);
 		//x,y,width,height
-		label.setBounds(50, 50, 95, 35);
+		label.setBounds(75, 50, 95, 35);
 		label.setLabelFor(pinField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		pinField = new JPasswordField(20);
-		pinField.setBounds(80, 50, 200, 35);
+		pinField.setBounds(110, 50, 200, 35);
 		pinField.addActionListener(this);
 		
 		this.add(label);
@@ -118,12 +109,12 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initLastNameField() {
 		JLabel label = new JLabel("Last Name", SwingConstants.RIGHT);
-		label.setBounds(5, 100, 95, 35);
+		label.setBounds(5, 90, 95, 35);
 		label.setLabelFor(lastNameField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		lastNameField = new JTextField(20);
-		lastNameField.setBounds(110, 100, 200, 35);
+		lastNameField.setBounds(110, 90, 200, 35);
 		lastNameField.addActionListener(this);
 		
 		this.add(label);
@@ -132,12 +123,12 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initFirstNameField() {
 		JLabel label = new JLabel("First Name", SwingConstants.RIGHT);
-		label.setBounds(5, 150, 95, 35);
+		label.setBounds(5, 130, 95, 35);
 		label.setLabelFor(firstNameField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		firstNameField = new JTextField(20);
-		firstNameField.setBounds(110, 150, 200, 35);
+		firstNameField.setBounds(110, 130, 200, 35);
 		firstNameField.addActionListener(this);
 		
 		this.add(label);
@@ -146,8 +137,8 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initDobField() {
 		JLabel label = new JLabel("DOB", SwingConstants.RIGHT);
-		label.setBounds(5, 200, 95, 35);
-		label.setLabelFor(dobField);
+		label.setBounds(5, 170, 95, 35);
+		label.setLabelFor(daysField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		String[] days = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
@@ -158,13 +149,13 @@ public class CreateView extends JPanel implements ActionListener {
 			years[i] = String.valueOf(startYear + i);
 		}
 		
-		JComboBox daysField = new JComboBox(days);
-		JComboBox monthsField = new JComboBox(months);
-		JComboBox yearsField = new JComboBox(years);
+		daysField = new JComboBox(days);
+		monthsField = new JComboBox(months);
+		yearsField = new JComboBox(years);
 		
-		daysField.setBounds(110, 200, 50, 35);
-		monthsField.setBounds(180, 200, 100, 35);
-		yearsField.setBounds(300, 200, 75, 35);
+		daysField.setBounds(110, 170, 50, 35);
+		monthsField.setBounds(180, 170, 100, 35);
+		yearsField.setBounds(300, 170, 75, 35);
 		
 		this.add(label);
 		this.add(daysField);
@@ -174,28 +165,36 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initPhoneField() {
 		JLabel label = new JLabel("Phone", SwingConstants.RIGHT);
-		label.setBounds(5, 250, 95, 35);
+		label.setBounds(5, 210, 95, 35);
 		label.setLabelFor(firstPhone);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		firstPhone = new JTextField(3);
-		firstPhone.setBounds(110, 250, 75, 35);
+		firstPhone.setBounds(110, 210, 75, 35);
 		firstPhone.addActionListener(this);
 		
-		//Add in the other boxes
+		secondPhone = new JTextField(3);
+		secondPhone.setBounds(190, 210, 75, 35);
+		secondPhone.addActionListener(this);
+		
+		thirdPhone = new JTextField(4);
+		thirdPhone.setBounds(270, 210, 75, 35);
+		thirdPhone.addActionListener(this);
 		
 		this.add(label);
 		this.add(firstPhone);
+		this.add(secondPhone);
+		this.add(thirdPhone);
 	}
 	
 	private void initStreetField() {
 		JLabel label = new JLabel("Street", SwingConstants.RIGHT);
-		label.setBounds(300, 300, 95, 35);
+		label.setBounds(5, 250, 95, 35);
 		label.setLabelFor(streetField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		streetField = new JTextField(20);
-		streetField.setBounds(300, 300, 200, 35);
+		streetField.setBounds(110, 250, 200, 35);
 		streetField.addActionListener(this);
 		
 		this.add(label);
@@ -204,12 +203,12 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initCityField() {
 		JLabel label = new JLabel("City", SwingConstants.RIGHT);
-		label.setBounds(300, 300, 95, 35);
+		label.setBounds(5, 290, 95, 35);
 		label.setLabelFor(cityField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		cityField = new JTextField(20);
-		cityField.setBounds(300, 300, 200, 35);
+		cityField.setBounds(110, 290, 200, 35);
 		cityField.addActionListener(this);
 		
 		this.add(label);
@@ -218,13 +217,15 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initStateField() {
 		JLabel label = new JLabel("State", SwingConstants.RIGHT);
-		label.setBounds(300, 300, 95, 35);
+		label.setBounds(5, 330, 95, 35);
 		label.setLabelFor(stateField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		stateField = new JTextField(20);
-		stateField.setBounds(300, 300, 200, 35);
-		stateField.addActionListener(this);
+		String[] states = {"AL", "AK", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"};
+		
+		stateField = new JComboBox(states);
+
+		stateField.setBounds(110, 330, 50, 35);
 		
 		this.add(label);
 		this.add(stateField);
@@ -232,12 +233,12 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initZipField() {
 		JLabel label = new JLabel("ZIP code", SwingConstants.RIGHT);
-		label.setBounds(300, 300, 95, 35);
+		label.setBounds(5, 370, 95, 35);
 		label.setLabelFor(zipField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		zipField = new JTextField(20);
-		zipField.setBounds(300, 300, 200, 35);
+		zipField.setBounds(110, 370, 200, 35);
 		zipField.addActionListener(this);
 		
 		this.add(label);
@@ -246,30 +247,18 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initSubmitButton() {	
 		submitButton = new JButton("Submit");
-		submitButton.setBounds(300, 300, 95, 35);
+		submitButton.setBounds(5, 410, 95, 35);
 		submitButton.addActionListener(this);
 		
 		this.add(submitButton);
 	}
 	
-	private boolean checking() {
-		if (pinField.getPassword().length != 4) {
-			System.out.println("Invalid PIN. Please re-enter");
-			return false;
-		}
-		/*if (phoneField.getText().length() != 10) {
-			System.out.println("Invalid phone number. Please re-enter");
-			return false;
-		} */
-		if (stateField.getText().length() != 2) {
-			System.out.println("Invalid state. Please re-enter");
-			return false;
-		}
-		if (zipField.getText().length() != 5) {
-			System.out.println("Invalid ZIP code. Please re-enter");
-			return false;
-		}
-		return true;
+	private void initCancelButton() {	
+		submitButton = new JButton("Cancel");
+		submitButton.setBounds(110, 410, 95, 35);
+		submitButton.addActionListener(this);
+		
+		this.add(submitButton);
 	}
 	
 	///////////////////// OVERRIDDEN METHODS //////////////////////////////////////////
@@ -284,13 +273,26 @@ public class CreateView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 			case SUBMIT:
-				if (checking()) {
-					long accountNumber = generatedAccountNumber++;
-					String result = accountNumber + String.format("%-4s", pinField.getPassword()) + String.format("%-15.2f", 0) + String.format("%-20s", lastNameField.getText()) + String.format("%-15s", firstNameField.getText()) + String.format("%-8s", dobField.getText()) /*+ String.format("%-10s", phoneField.getText())*/ + String.format("%-30s", streetField.getText()) + String.format("%-30s", cityField.getText()) + String.format("%-2s", stateField.getText()) + String.format("%-5s", zipField.getText()) + "Y";
-					//manager.login(String.valueOf(accountNumber), pinField.getPassword());
-					manager.switchTo(ATM.HOME_VIEW);
-				}
+				//long accountNumber = generatedAccountNumber++;
+				//String result = accountNumber + String.format("%-4s", pinField.getPassword()) + String.format("%-15.2f", 0) + String.format("%-20s", lastNameField.getText()) + String.format("%-15s", firstNameField.getText()) + String.format("%-8s", dobField.getText()) /*+ String.format("%-10s", phoneField.getText())*/ + String.format("%-30s", streetField.getText()) + String.format("%-30s", cityField.getText()) + String.format("%-2s", stateField.getText()) + String.format("%-5s", zipField.getText()) + "Y";
+				//manager.login(String.valueOf(accountNumber), pinField.getPassword());
+				manager.switchTo(ATM.HOME_VIEW);
 				break;
+			case CANCEL:
+				pinField.setText(null);
+				lastNameField.setText(null);
+				firstNameField.setText(null);
+				daysField.setSelectedIndex(0);
+				monthsField.setSelectedIndex(0);
+				yearsField.setSelectedIndex(0);
+				firstPhone.setText(null);
+				secondPhone.setText(null);
+				thirdPhone.setText(null);
+				streetField.setText(null);
+				cityField.setText(null);
+				stateField.setSelectedIndex(0);
+				zipField.setText(null);
+				manager.switchTo(ATM.LOGIN_VIEW);
 			default: System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); break;
 		}
 		// TODO
