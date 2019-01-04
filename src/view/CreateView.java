@@ -16,7 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import data.Database;
-
+import model.BankAccount;
+import model.User;
 import controller.ViewManager;
 
 @SuppressWarnings("serial")
@@ -45,6 +46,9 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private JButton submitButton;
 	private JButton cancelButton;
+	
+	private User createdUser;
+	private BankAccount createdBank;
 	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -136,13 +140,13 @@ public class CreateView extends JPanel implements ActionListener {
 	}
 	
 	private void initDobField() {
-		JLabel label = new JLabel("DOB", SwingConstants.RIGHT);
+		JLabel label = new JLabel("Day,Mon,Year", SwingConstants.LEFT);
 		label.setBounds(5, 170, 95, 35);
 		label.setLabelFor(daysField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		String[] days = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
-		String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
+		String[] days = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+		String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "12", "12"};
 		String[] years = new String[120];
 		int startYear = 1900;
 		for (int i = 0; i <= 119; i++) {
@@ -154,8 +158,8 @@ public class CreateView extends JPanel implements ActionListener {
 		yearsField = new JComboBox(years);
 		
 		daysField.setBounds(110, 170, 50, 35);
-		monthsField.setBounds(180, 170, 100, 35);
-		yearsField.setBounds(300, 170, 75, 35);
+		monthsField.setBounds(180, 170, 50, 35);
+		yearsField.setBounds(260, 170, 75, 35);
 		
 		this.add(label);
 		this.add(daysField);
@@ -274,10 +278,13 @@ public class CreateView extends JPanel implements ActionListener {
 		switch (e.getActionCommand()) {
 			case SUBMIT:
 				//POSSIBLY ADD IN A CHECKING METHOD
-				//long accountNumber = generatedAccountNumber++;
-				//String result = accountNumber + String.format("%-4s", pinField.getPassword()) + String.format("%-15.2f", 0) + String.format("%-20s", lastNameField.getText()) + String.format("%-15s", firstNameField.getText()) + String.format("%-8s", dobField.getText()) /*+ String.format("%-10s", phoneField.getText())*/ + String.format("%-30s", streetField.getText()) + String.format("%-30s", cityField.getText()) + String.format("%-2s", stateField.getText()) + String.format("%-5s", zipField.getText()) + "Y";
-				//manager.login(String.valueOf(accountNumber), pinField.getPassword());
-				manager.switchTo(ATM.HOME_VIEW);
+				createdUser = new User(Integer.valueOf(String.valueOf(pinField.getPassword())), Integer.valueOf(String.valueOf(yearsField.getSelectedItem()) + String.valueOf(monthsField.getSelectedItem()) + String.valueOf(daysField.getSelectedItem())), Long.valueOf(firstPhone.getText() + secondPhone.getText() + thirdPhone.getText()), firstNameField.getText(), lastNameField.getText(), streetField.getText(), cityField.getText(), String.valueOf(stateField.getSelectedItem()), zipField.getText());
+				System.out.println(createdUser.toString());
+				manager.switchTo(ATM.LOGIN_VIEW);
+				createdBank = new BankAccount('Y', manager.getNextAccountNumber(), 0.00, createdUser);
+				System.out.println(createdBank.toString());
+				manager.insertNewAccount(createdBank);
+				System.out.println("Insert successful");
 				break;
 			case CANCEL:
 				pinField.setText(null);
@@ -294,14 +301,8 @@ public class CreateView extends JPanel implements ActionListener {
 				stateField.setSelectedIndex(0);
 				zipField.setText(null);
 				manager.switchTo(ATM.LOGIN_VIEW);
+				break;
 			default: System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); break;
 		}
-		// TODO
-		//
-		// this is where you'll setup your action listener, which is responsible for
-		// responding to actions the user might take in this view (an action can be a
-		// user clicking a button, typing in a textfield, etc.).
-		//
-		// feel free to use my action listener in LoginView.java as an example.
 	}
 }

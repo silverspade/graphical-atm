@@ -30,11 +30,9 @@ public class LoginView extends JPanel implements ActionListener {
 	private JTextField accountField;		// textfield where the user enters his or her account number
 	private JPasswordField pinField;		// textfield where the user enters his or her PIN
 	private JLabel errorMessageLabel;		// label for potential error messages
-	private JButton clearButton; 
 
 	private final static String LOGIN = "Login";
 	private final static String CREATE = "Open an Account";
-	private final static String CLEAR = "Clear Fields";
 	
 	/**
 	 * Constructs an instance (or objects) of the LoginView class.
@@ -77,7 +75,6 @@ public class LoginView extends JPanel implements ActionListener {
 		initCreateButton();
 		initErrorMessageLabel();
 		initPowerButton();
-		initClearButton();
 	}
 	
 	/*
@@ -144,14 +141,6 @@ public class LoginView extends JPanel implements ActionListener {
 	 * Initializes the components needed for the clear fields button.
 	 */
 	
-	private void initClearButton() {	
-		clearButton = new JButton("Clear Fields");
-		clearButton.setBounds(205, 250, 200, 35);
-		clearButton.addActionListener(this);
-		
-		this.add(clearButton);
-	}
-	
 	/*
 	 * Initializes the components needed for the create button.
 	 */
@@ -216,9 +205,8 @@ public class LoginView extends JPanel implements ActionListener {
 		}
 		
 		switch (e.getActionCommand()) {
-			case LOGIN: manager.login(accountField.getText(), pinField.getPassword()); break;
+			case LOGIN: manager.login(accountField.getText(), pinField.getPassword()); accountField.setText(null); pinField.setText(null); break;
 			case CREATE: manager.switchTo(ATM.CREATE_VIEW); break;
-			case CLEAR: accountField.setText(null); pinField.setText(null); break;
 			default: System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); break;
 		}
 	}

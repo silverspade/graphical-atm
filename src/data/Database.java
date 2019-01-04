@@ -5,6 +5,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
@@ -207,6 +208,27 @@ public class Database {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Retrieves the largest account number that exists in the database.
+	 * 
+	 * @return
+	 */
+	
+	public long getMaxAccountNumber() {
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT MAX(account_number) FROM accounts");
+			
+			if (rs.next()) {
+				return rs.getLong(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return -1;
 	}
 	
 	/**

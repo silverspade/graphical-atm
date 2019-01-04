@@ -56,6 +56,13 @@ public class ViewManager {
 		}
 	}
 	
+	public long getNextAccountNumber() {
+		return db.getMaxAccountNumber() + 1;
+	}
+	
+	public boolean insertNewAccount(BankAccount newAccount) {
+		return db.insertAccount(newAccount);
+	}
 	/**
 	 * Switches the active (or visible) view upon request.
 	 * 
