@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import data.Database;
 import model.BankAccount;
 import view.ATM;
+import view.HomeView;
 import view.LoginView;
 
 public class ViewManager {
@@ -40,20 +41,22 @@ public class ViewManager {
 	
 	public void login(String accountNumber, char[] pin) {
 		String userPin = new String(pin);
-		
+		LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 		if (accountNumber != null && userPin != null && accountNumber.length() > 0 && userPin.length() > 0) {
 			account = db.getAccount(Long.valueOf(accountNumber), Integer.valueOf(new String(pin)));
-			
 			if (account == null) {
-				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("Invalid account number and/or PIN.");
 			} else {
 				switchTo(ATM.HOME_VIEW);
-				
-				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
-				lv.updateErrorMessage("");
+				welcomeMessage("init");
+				lv.clear();
 			}
 		}
+	}
+	
+	public void welcomeMessage(String method) {
+		HomeView hv = ((HomeView) views.getComponents()[ATM.HOME_VIEW_INDEX]);
+		hv.welcomeMessage(method);
 	}
 	
 	public long getNextAccountNumber() {
@@ -95,5 +98,17 @@ public class ViewManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}	
+	
+	public BankAccount getBankAccount() {
+		return account;
+	}
+	
+	public boolean updateAccount(BankAccount account) {
+		return db.updateAccount(account);
+	}
+	
+	public BankAccount getAccount(long accountNumber) {
+		return db.getAccount(accountNumber);
 	}
 }

@@ -6,21 +6,27 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import controller.ViewManager;
+import model.BankAccount;
 
 @SuppressWarnings("serial")
 public class HomeView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
 	private JButton logoutButton;
-	private JTextField accountField;
-	private JPasswordField pinField;
-	
-	private final static String LOGOUT = "Logout";
+	private JButton depositButton;
+	private JButton withdrawButton;
+	private JButton transferButton;
+		
+	private JLabel nameLabel;
+	private JLabel acctNumLabel;
+	private JLabel balanceLabel;
 	
 	/**
 	 * Constructs an instance (or objects) of the HomeView class.
@@ -44,22 +50,72 @@ public class HomeView extends JPanel implements ActionListener {
 	private void initialize() {
 		this.setLayout(null);
 		initLogoutButton();
-		
-		// TODO
-		//
+		initDepositButton();
+		initWithdrawButton();
+		initTransferButton();
 		// this is where you should build the HomeView (i.e., all the components that
 		// allow the user to interact with the ATM - deposit, withdraw, transfer, etc.).
-		//
-		// feel free to use my layout in LoginView as an example for laying out and
-		// positioning your components.
 	}
 	
 	private void initLogoutButton() {	
 		logoutButton = new JButton("Logout");
-		logoutButton.setBounds(205, 180, 200, 35);
+		logoutButton.setBounds(20, 400, 200, 35);
 		logoutButton.addActionListener(this);
 		
 		this.add(logoutButton);
+	}
+	
+	private void initDepositButton() {	
+		depositButton = new JButton("Deposit");
+		depositButton.setBounds(20, 100, 200, 35);
+		depositButton.addActionListener(this);
+		
+		this.add(depositButton);
+	}
+	
+	private void initWithdrawButton() {	
+		withdrawButton = new JButton("Withdraw");
+		withdrawButton.setBounds(20, 200, 200, 35);
+		withdrawButton.addActionListener(this);
+		
+		this.add(withdrawButton);
+	}
+	
+	private void initTransferButton() {	
+		transferButton = new JButton("Transfer");
+		transferButton.setBounds(20, 300, 200, 35);
+		transferButton.addActionListener(this);
+		
+		this.add(transferButton);
+	}
+	
+	public void welcomeMessage(String method) {
+		if (method.equals("init")) {
+			String nameMessage = "Welcome " + manager.getBankAccount().getUser().getName();
+			nameLabel = new JLabel(nameMessage, SwingConstants.LEFT);
+			nameLabel.setBounds(20, 5, 200, 35);
+			
+			String accountNumMessage = "Account Number: " + manager.getBankAccount().getAccountNumber();
+			acctNumLabel = new JLabel(accountNumMessage, SwingConstants.LEFT);
+			acctNumLabel.setBounds(20, 20, 200, 35);
+			
+			String balanceMessage = "Current Balance: " + manager.getBankAccount().getBalance();
+			balanceLabel = new JLabel(balanceMessage, SwingConstants.LEFT);
+			balanceLabel.setBounds(20, 35, 200, 35);
+		} else {
+			nameLabel = new JLabel("  ", SwingConstants.LEFT);
+			nameLabel.setBounds(20, 5, 200, 35);
+			
+			acctNumLabel = new JLabel("  ", SwingConstants.LEFT);
+			acctNumLabel.setBounds(20, 20, 200, 35);
+			
+			balanceLabel = new JLabel("  ", SwingConstants.LEFT);
+			balanceLabel.setBounds(20, 35, 200, 35);
+		}
+		
+		this.add(nameLabel);
+		this.add(acctNumLabel);
+		this.add(balanceLabel);
 	}
 	
 	/*
@@ -84,12 +140,16 @@ public class HomeView extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
-		
-		switch (e.getActionCommand()) {
-			case LOGOUT: 
-				manager.switchTo(ATM.LOGIN_VIEW); 
-				break;
-			default: System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); break;
+		if (source.equals(depositButton)) {
+			manager.switchTo(ATM.DEPOSIT_VIEW);
+		} else if (source.equals(withdrawButton)) {
+			manager.switchTo(ATM.WITHDRAW_VIEW);
+		} else if (source.equals(transferButton)) {
+			manager.switchTo(ATM.TRANSFER_VIEW);
+		} else if (source.equals(logoutButton)){
+			manager.switchTo(ATM.LOGIN_VIEW); 
+		} else {
+			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");
 		}
 	}
 }

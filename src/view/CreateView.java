@@ -258,11 +258,11 @@ public class CreateView extends JPanel implements ActionListener {
 	}
 	
 	private void initCancelButton() {	
-		submitButton = new JButton("Cancel");
-		submitButton.setBounds(110, 410, 95, 35);
-		submitButton.addActionListener(this);
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(110, 410, 95, 35);
+		cancelButton.addActionListener(this);
 		
-		this.add(submitButton);
+		this.add(cancelButton);
 	}
 	
 	///////////////////// OVERRIDDEN METHODS //////////////////////////////////////////

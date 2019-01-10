@@ -130,6 +130,7 @@ public class LoginView extends JPanel implements ActionListener {
 	}
 	
 	private void initErrorMessageLabel() {
+		errorMessageLabel = new JLabel("", SwingConstants.CENTER);
 		errorMessageLabel.setBounds(0, 240, 500, 35);
 		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
 		errorMessageLabel.setForeground(Color.RED);
@@ -178,6 +179,12 @@ public class LoginView extends JPanel implements ActionListener {
 		this.add(powerButton);
 	}
 	
+	public void clear() {
+		accountField.setText("");
+		pinField.setText("");
+		errorMessageLabel.setText("");
+	}
+	
 	/*
 	 * LoginView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -205,8 +212,12 @@ public class LoginView extends JPanel implements ActionListener {
 		}
 		
 		switch (e.getActionCommand()) {
-			case LOGIN: manager.login(accountField.getText(), pinField.getPassword()); accountField.setText(null); pinField.setText(null); break;
-			case CREATE: manager.switchTo(ATM.CREATE_VIEW); break;
+			case LOGIN: 
+				manager.login(accountField.getText(), pinField.getPassword()); 
+				break;
+			case CREATE: 
+				manager.switchTo(ATM.CREATE_VIEW); 
+				break;
 			default: System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); break;
 		}
 	}
