@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +26,7 @@ public class DepositView extends JPanel implements ActionListener {
 	private JButton depositButton;
 	private JButton cancelButton;
 	private JTextField amountField;
-
+	//private JLabel errorMessageLabel;
 	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -40,6 +41,10 @@ public class DepositView extends JPanel implements ActionListener {
 		initialize();
 	}
 	
+	/*public void updateErrorMessage(String errorMessage) {
+		errorMessageLabel.setText(errorMessage);
+	}*/
+	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
 	
 	/*
@@ -52,6 +57,7 @@ public class DepositView extends JPanel implements ActionListener {
 		initAmountField();
 		initDepositButton();
 		initCancelButton();
+		//initErrorMessageLabel();
 	}
 	
 	/*
@@ -101,6 +107,15 @@ public class DepositView extends JPanel implements ActionListener {
 		this.add(amountField);
 	}
 	
+	/*private void initErrorMessageLabel() {
+		errorMessageLabel = new JLabel("", SwingConstants.CENTER);
+		errorMessageLabel.setBounds(0, 240, 500, 35);
+		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		errorMessageLabel.setForeground(Color.RED);
+		
+		this.add(errorMessageLabel);
+	}*/
+	
 	///////////////////// OVERRIDDEN METHODS //////////////////////////////////////////
 	
 	/*
@@ -114,8 +129,7 @@ public class DepositView extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		if (source.equals(cancelButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
-			manager.welcomeMessage("clear");
-			manager.welcomeMessage("init");
+			manager.welcomeMessage("update");
 			amountField.setText(null);
 		} else if(source.equals(depositButton)) {
 			BankAccount account = manager.getBankAccount();
@@ -123,11 +137,11 @@ public class DepositView extends JPanel implements ActionListener {
 			if (result == 3) {
 				manager.updateAccount(account);
 				manager.switchTo(ATM.HOME_VIEW);
-				manager.welcomeMessage("clear");
-				manager.welcomeMessage("init");
+				manager.welcomeMessage("update");
+				//updateErrorMessage("");
 				amountField.setText(null);
 			} else {
-				System.out.println("Invalid Amount");
+				//updateErrorMessage("Invalid Amount");
 			}
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");

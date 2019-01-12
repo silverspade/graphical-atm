@@ -208,6 +208,7 @@ public class LoginView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source.equals(powerButton)) {
+			manager.welcomeMessage("clear");
 			manager.shutdown();
 		}
 		

@@ -114,8 +114,7 @@ public class WithdrawView extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		if (source.equals(cancelButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
-			manager.welcomeMessage("clear");
-			manager.welcomeMessage("init");
+			manager.welcomeMessage("update");
 			amountField.setText(null);
 		} else if(source.equals(withdrawButton)) {
 			BankAccount account = manager.getBankAccount();
@@ -123,8 +122,7 @@ public class WithdrawView extends JPanel implements ActionListener {
 			if (result == 3) {
 				manager.updateAccount(account);
 				manager.switchTo(ATM.HOME_VIEW);
-				manager.welcomeMessage("clear");
-				manager.welcomeMessage("init");
+				manager.welcomeMessage("update");
 				amountField.setText(null);
 			} else if (result == 0) {
 				System.out.println("Invalid Amount");

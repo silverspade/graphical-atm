@@ -140,7 +140,7 @@ public class CreateView extends JPanel implements ActionListener {
 	}
 	
 	private void initDobField() {
-		JLabel label = new JLabel("Day,Mon,Year", SwingConstants.LEFT);
+		JLabel label = new JLabel("DD MM YYYY", SwingConstants.LEFT);
 		label.setBounds(5, 170, 95, 35);
 		label.setLabelFor(daysField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));

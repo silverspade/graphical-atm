@@ -49,6 +49,8 @@ public class ViewManager {
 			} else {
 				switchTo(ATM.HOME_VIEW);
 				welcomeMessage("init");
+				welcomeMessage("clear");
+				welcomeMessage("update");
 				lv.clear();
 			}
 		}

@@ -130,8 +130,7 @@ public class TransferView extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		if (source.equals(cancelButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
-			manager.welcomeMessage("clear");
-			manager.welcomeMessage("init");
+			manager.welcomeMessage("update");
 			amountField.setText(null);
 		} else if(source.equals(transferButton)) {
 			BankAccount origin = manager.getBankAccount();
@@ -140,8 +139,7 @@ public class TransferView extends JPanel implements ActionListener {
 			if (result == 3) {
 				manager.updateAccount(origin);
 				manager.switchTo(ATM.HOME_VIEW);
-				manager.welcomeMessage("clear");
-				manager.welcomeMessage("init");
+				manager.welcomeMessage("update");
 				amountField.setText(null);
 			} else {
 				System.out.println("Account Not Found");

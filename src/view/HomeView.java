@@ -102,15 +102,14 @@ public class HomeView extends JPanel implements ActionListener {
 			String balanceMessage = "Current Balance: " + manager.getBankAccount().getBalance();
 			balanceLabel = new JLabel(balanceMessage, SwingConstants.LEFT);
 			balanceLabel.setBounds(20, 35, 200, 35);
+		} else if (method.equals("update")) {
+			nameLabel.setText("Welcome " + manager.getBankAccount().getUser().getName());
+			acctNumLabel.setText("Account Number: " + manager.getBankAccount().getAccountNumber());
+			balanceLabel.setText("Current Balance: " + manager.getBankAccount().getBalance());
 		} else {
-			nameLabel = new JLabel("  ", SwingConstants.LEFT);
-			nameLabel.setBounds(20, 5, 200, 35);
-			
-			acctNumLabel = new JLabel("  ", SwingConstants.LEFT);
-			acctNumLabel.setBounds(20, 20, 200, 35);
-			
-			balanceLabel = new JLabel("  ", SwingConstants.LEFT);
-			balanceLabel.setBounds(20, 35, 200, 35);
+			nameLabel.setText("");
+			acctNumLabel.setText("");
+			balanceLabel.setText("");
 		}
 		
 		this.add(nameLabel);
@@ -147,6 +146,7 @@ public class HomeView extends JPanel implements ActionListener {
 		} else if (source.equals(transferButton)) {
 			manager.switchTo(ATM.TRANSFER_VIEW);
 		} else if (source.equals(logoutButton)){
+			manager.welcomeMessage("clear");
 			manager.switchTo(ATM.LOGIN_VIEW); 
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");
