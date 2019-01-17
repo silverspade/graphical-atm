@@ -52,15 +52,14 @@ public class ViewManager {
 				welcomeMessage("clear");
 				welcomeMessage("update");
 				lv.clear();
-				sendBankInfo(account);
+				refreshBankInfo(account);
 			}
 		}
 	}
 	
-	public void sendBankInfo(BankAccount account) {
+	public void refreshBankInfo(BankAccount account) {
 		view.InformationView iv = ((view.InformationView) views.getComponents()[ATM.INFORMATION_VIEW_INDEX]);
-		iv.setBankAccount(account);
-		iv.initInfoPortion();
+		iv.refreshInfo();;
 	}
 	
 	public void welcomeMessage(String method) {
@@ -107,7 +106,15 @@ public class ViewManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}	
+	}
+	
+	public void logout() {
+		if (confirm() == 1) {
+			account = null;
+			switchTo(ATM.LOGIN_VIEW);
+			welcomeMessage("clear");
+		}
+	}
 	
 	public int confirm() {
 		int choice = JOptionPane.showConfirmDialog(

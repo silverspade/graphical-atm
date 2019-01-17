@@ -40,7 +40,7 @@ public class InformationView extends JPanel implements ActionListener {
 	private JButton editButton;
 	private JButton backButton;
 	private JButton saveButton;
-	private BankAccount account;
+	private JButton cancelButton;
 	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -67,7 +67,10 @@ public class InformationView extends JPanel implements ActionListener {
 		initEditButton();
 		initBackButton();
 		initSaveButton();
+		initCancelButton();
+		initInfoPortion();
 		saveButton.setVisible(false);
+		cancelButton.setVisible(false);
 	}
 	
 	public void initInfoPortion() {
@@ -84,6 +87,20 @@ public class InformationView extends JPanel implements ActionListener {
 		initZipField();
 		stateDropdown.setVisible(false);
 	}
+	
+	public void refreshInfo() {
+		pinField.setText(Integer.toString(manager.getBankAccount().getUser().getPin()));
+		accountNumField.setText(Long.toString(manager.getBankAccount().getAccountNumber()));
+		lastNameField.setText(manager.getBankAccount().getUser().getLastName());
+		firstNameField.setText(manager.getBankAccount().getUser().getFirstName());
+		birthField.setText(Integer.toString(manager.getBankAccount().getUser().getDob()));
+		phoneField.setText(Long.toString(manager.getBankAccount().getUser().getPhone()));
+		streetField.setText(manager.getBankAccount().getUser().getStreetAddress());
+		cityField.setText(manager.getBankAccount().getUser().getCity());
+		stateField.setText(manager.getBankAccount().getUser().getState());
+		zipField.setText(manager.getBankAccount().getUser().getZip());
+	}
+	
 	/*
 	 * CreateView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -104,7 +121,6 @@ public class InformationView extends JPanel implements ActionListener {
 		pinField = new JTextField(20);
 		pinField.setBounds(110, 10, 200, 35);
 		pinField.setEditable(false);
-		pinField.setText(Integer.toString(account.getUser().getPin()));
 		pinField.addActionListener(this);
 		
 		this.add(label);
@@ -115,12 +131,11 @@ public class InformationView extends JPanel implements ActionListener {
 		JLabel label = new JLabel("Acct.Num.", SwingConstants.RIGHT);
 		label.setBounds(5, 50, 95, 35);
 		label.setLabelFor(accountNumField);
-		label.setFont(new Font("DialogInput", Font.BOLD, 14));
+		label.setFont(new Font("DialogInput", Font.BOLD, 14)); 
 		
 		accountNumField = new JTextField(20);
 		accountNumField.setBounds(110, 50, 200, 35);
 		accountNumField.setEditable(false);
-		accountNumField.setText(Long.toString(account.getAccountNumber()));
 		accountNumField.addActionListener(this);
 		
 		this.add(label);
@@ -136,7 +151,6 @@ public class InformationView extends JPanel implements ActionListener {
 		lastNameField = new JTextField(20);
 		lastNameField.setBounds(110, 90, 200, 35);
 		lastNameField.setEditable(false);
-		lastNameField.setText(account.getUser().getLastName());
 		lastNameField.addActionListener(this);
 		
 		this.add(label);
@@ -152,7 +166,6 @@ public class InformationView extends JPanel implements ActionListener {
 		firstNameField = new JTextField(20);
 		firstNameField.setBounds(110, 130, 200, 35);
 		firstNameField.setEditable(false);
-		firstNameField.setText(account.getUser().getFirstName());
 		firstNameField.addActionListener(this);
 		
 		this.add(label);
@@ -168,7 +181,6 @@ public class InformationView extends JPanel implements ActionListener {
 		birthField = new JTextField(20);
 		birthField.setBounds(110, 170, 200, 35);
 		birthField.setEditable(false);
-		birthField.setText(Integer.toString(account.getUser().getDob()));
 		birthField.addActionListener(this);
 		
 		this.add(label);
@@ -184,7 +196,6 @@ public class InformationView extends JPanel implements ActionListener {
 		phoneField = new JTextField(20);
 		phoneField.setBounds(110, 210, 200, 35);
 		phoneField.setEditable(false);
-		phoneField.setText(Long.toString(account.getUser().getPhone()));
 		phoneField.addActionListener(this);
 		
 		this.add(label);
@@ -200,7 +211,6 @@ public class InformationView extends JPanel implements ActionListener {
 		streetField = new JTextField(20);
 		streetField.setBounds(110, 250, 200, 35);
 		streetField.setEditable(false);
-		streetField.setText(account.getUser().getStreetAddress());
 		streetField.addActionListener(this);
 		
 		this.add(label);
@@ -216,7 +226,6 @@ public class InformationView extends JPanel implements ActionListener {
 		cityField = new JTextField(20);
 		cityField.setBounds(110, 290, 200, 35);
 		cityField.setEditable(false);
-		cityField.setText(account.getUser().getCity());
 		cityField.addActionListener(this);
 		
 		this.add(label);
@@ -232,7 +241,6 @@ public class InformationView extends JPanel implements ActionListener {
 		stateField = new JTextField(20);
 		stateField.setBounds(110, 330, 50, 35);
 		stateField.setEditable(false);
-		stateField.setText(account.getUser().getState());
 		stateField.addActionListener(this);
 		
 		this.add(label);
@@ -264,7 +272,6 @@ public class InformationView extends JPanel implements ActionListener {
 		zipField = new JTextField(20);
 		zipField.setBounds(110, 370, 200, 35);
 		zipField.setEditable(false);
-		zipField.setText(account.getUser().getZip());
 		zipField.addActionListener(this);
 		
 		this.add(label);
@@ -288,16 +295,24 @@ public class InformationView extends JPanel implements ActionListener {
 	}
 	
 	private void initBackButton() {	
-		backButton = new JButton("Back/Cancel");
+		backButton = new JButton("Back");
 		backButton.setBounds(110, 410, 200, 35);
 		backButton.addActionListener(this);
 		
 		this.add(backButton);
 	}
 	
-	public void setBankAccount(BankAccount setAccount) {
-		this.account = setAccount;
+	private void initCancelButton() {	
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(110, 410, 200, 35);
+		cancelButton.addActionListener(this);
+		
+		this.add(cancelButton);
 	}
+	
+//	public void setBankAccount(BankAccount setAccount) {
+//		this.account = setAccount;
+//	}
 	
 	///////////////////// OVERRIDDEN METHODS //////////////////////////////////////////
 	
@@ -316,71 +331,82 @@ public class InformationView extends JPanel implements ActionListener {
 			streetField.setEditable(true);
 			cityField.setEditable(true);
 			zipField.setEditable(true);
-			editButton.setVisible(false);
-			saveButton.setVisible(true);
 			stateDropdown.setVisible(true);
 			stateField.setVisible(false);
+			
+			editButton.setVisible(false);
+			saveButton.setVisible(true);
+			backButton.setVisible(false);
+			cancelButton.setVisible(true);
+		} else if (source.equals(cancelButton)) {
+			pinField.setText(Integer.toString(manager.getBankAccount().getUser().getPin()));
+			pinField.setEditable(false);
+			accountNumField.setText(Long.toString(manager.getBankAccount().getAccountNumber()));
+			accountNumField.setEditable(false);
+			lastNameField.setText(manager.getBankAccount().getUser().getLastName());
+			lastNameField.setEditable(false);
+			firstNameField.setText(manager.getBankAccount().getUser().getFirstName());
+			firstNameField.setEditable(false);
+			birthField.setText(Integer.toString(manager.getBankAccount().getUser().getDob()));
+			birthField.setEditable(false);
+			phoneField.setText(Long.toString(manager.getBankAccount().getUser().getPhone()));
+			phoneField.setEditable(false);
+			streetField.setText(manager.getBankAccount().getUser().getStreetAddress());
+			streetField.setEditable(false);
+			cityField.setText(manager.getBankAccount().getUser().getCity());
+			cityField.setEditable(false);
+			stateField.setText(manager.getBankAccount().getUser().getState());
+			stateField.setEditable(false);
+			zipField.setText(manager.getBankAccount().getUser().getZip());
+			zipField.setEditable(false);
+			stateDropdown.setVisible(false);
+			stateField.setVisible(true);
+			
+			editButton.setVisible(true);
+			saveButton.setVisible(false);
+			backButton.setVisible(true);
+			cancelButton.setVisible(false);
 		} else if (source.equals(backButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
-			pinField.setText(Integer.toString(account.getUser().getPin()));
-			pinField.setEditable(false);
-			accountNumField.setText(Long.toString(account.getAccountNumber()));
-			accountNumField.setEditable(false);
-			lastNameField.setText(account.getUser().getLastName());
-			lastNameField.setEditable(false);
-			firstNameField.setText(account.getUser().getFirstName());
-			firstNameField.setEditable(false);
-			birthField.setText(Integer.toString(account.getUser().getDob()));
-			birthField.setEditable(false);
-			phoneField.setText(Long.toString(account.getUser().getPhone()));
-			phoneField.setEditable(false);
-			streetField.setText(account.getUser().getStreetAddress());
-			streetField.setEditable(false);
-			cityField.setText(account.getUser().getCity());
-			cityField.setEditable(false);
-			stateField.setText(account.getUser().getState());
-			stateField.setEditable(false);
-			zipField.setText(account.getUser().getZip());
-			zipField.setEditable(false);
-			editButton.setVisible(true);
-			saveButton.setVisible(false);
-			stateDropdown.setVisible(false);
-			stateField.setVisible(true);
-		} else if (source.equals(saveButton)) {
+		}
+		else if (source.equals(saveButton)) {
 			System.out.println("Saving...");
-			account.getUser().setPin(account.getUser().getPin(), Integer.valueOf(pinField.getText()));
+			manager.getBankAccount().getUser().setPin(manager.getBankAccount().getUser().getPin(), Integer.valueOf(pinField.getText()));
 			//Can add error message for if it was not valid and didn't changed
-			account.getUser().setPhone(Long.valueOf(phoneField.getText()));
-			account.getUser().setStreetAddress(streetField.getText());
-			account.getUser().setCity(cityField.getText());
-			account.getUser().setState(String.valueOf(stateDropdown.getSelectedItem()));
-			account.getUser().setZip(zipField.getText());
-			manager.updateAccount(account);
+			manager.getBankAccount().getUser().setPhone(Long.valueOf(phoneField.getText()));
+			manager.getBankAccount().getUser().setStreetAddress(streetField.getText());
+			manager.getBankAccount().getUser().setCity(cityField.getText());
+			manager.getBankAccount().getUser().setState(String.valueOf(stateDropdown.getSelectedItem()));
+			manager.getBankAccount().getUser().setZip(zipField.getText());
+			manager.updateAccount(manager.getBankAccount());
 			System.out.println("Saved");
-			pinField.setText(Integer.toString(account.getUser().getPin()));
+			pinField.setText(Integer.toString(manager.getBankAccount().getUser().getPin()));
 			pinField.setEditable(false);
-			accountNumField.setText(Long.toString(account.getAccountNumber()));
+			accountNumField.setText(Long.toString(manager.getBankAccount().getAccountNumber()));
 			accountNumField.setEditable(false);
-			lastNameField.setText(account.getUser().getLastName());
+			lastNameField.setText(manager.getBankAccount().getUser().getLastName());
 			lastNameField.setEditable(false);
-			firstNameField.setText(account.getUser().getFirstName());
+			firstNameField.setText(manager.getBankAccount().getUser().getFirstName());
 			firstNameField.setEditable(false);
-			birthField.setText(Integer.toString(account.getUser().getDob()));
+			birthField.setText(Integer.toString(manager.getBankAccount().getUser().getDob()));
 			birthField.setEditable(false);
-			phoneField.setText(Long.toString(account.getUser().getPhone()));
+			phoneField.setText(Long.toString(manager.getBankAccount().getUser().getPhone()));
 			phoneField.setEditable(false);
-			streetField.setText(account.getUser().getStreetAddress());
+			streetField.setText(manager.getBankAccount().getUser().getStreetAddress());
 			streetField.setEditable(false);
-			cityField.setText(account.getUser().getCity());
+			cityField.setText(manager.getBankAccount().getUser().getCity());
 			cityField.setEditable(false);
-			stateField.setText(account.getUser().getState());
+			stateField.setText(manager.getBankAccount().getUser().getState());
 			stateField.setEditable(false);
-			zipField.setText(account.getUser().getZip());
+			zipField.setText(manager.getBankAccount().getUser().getZip());
 			zipField.setEditable(false);
-			editButton.setVisible(true);
-			saveButton.setVisible(false);
 			stateDropdown.setVisible(false);
 			stateField.setVisible(true);
+			
+			editButton.setVisible(true);
+			saveButton.setVisible(false);
+			backButton.setVisible(true);
+			cancelButton.setVisible(false);
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); 
 		}
