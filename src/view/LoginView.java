@@ -208,13 +208,12 @@ public class LoginView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source.equals(powerButton)) {
-			manager.welcomeMessage("clear");
 			manager.shutdown();
 		}
 		
 		switch (e.getActionCommand()) {
 			case LOGIN: 
-				manager.login(accountField.getText(), pinField.getPassword()); 
+				manager.login(accountField.getText(), pinField.getPassword());
 				break;
 			case CREATE: 
 				manager.switchTo(ATM.CREATE_VIEW); 

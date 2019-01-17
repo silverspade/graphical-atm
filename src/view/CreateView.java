@@ -27,9 +27,7 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private final static String SUBMIT = "Submit";
 	private final static String CANCEL = "Cancel";
-	
-	private static long generatedAccountNumber = 100000009L;
-	
+		
 	private JPasswordField pinField;
 	private JTextField lastNameField;
 	private JTextField firstNameField;
@@ -140,7 +138,7 @@ public class CreateView extends JPanel implements ActionListener {
 	}
 	
 	private void initDobField() {
-		JLabel label = new JLabel("DD MM YYYY", SwingConstants.LEFT);
+		JLabel label = new JLabel("DD MM YYYY", SwingConstants.RIGHT);
 		label.setBounds(5, 170, 95, 35);
 		label.setLabelFor(daysField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));

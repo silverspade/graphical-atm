@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ public class TransferView extends JPanel implements ActionListener {
 	private JButton cancelButton;
 	private JTextField amountField;
 	private JTextField destinationField;
+	private JLabel errorMessageLabel;
 
 	
 	/**
@@ -41,6 +43,10 @@ public class TransferView extends JPanel implements ActionListener {
 		initialize();
 	}
 	
+	public void updateErrorMessage(String errorMessage) {
+		errorMessageLabel.setText(errorMessage);
+	}
+	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
 	
 	/*
@@ -54,6 +60,7 @@ public class TransferView extends JPanel implements ActionListener {
 		initDestinationField();
 		initTransferButton();
 		initCancelButton();
+		initErrorMessageLabel();
 	}
 	
 	/*
@@ -117,6 +124,15 @@ public class TransferView extends JPanel implements ActionListener {
 		this.add(destinationField);
 	}
 	
+	private void initErrorMessageLabel() {
+		errorMessageLabel = new JLabel("", SwingConstants.CENTER);
+		errorMessageLabel.setBounds(0, 240, 500, 35);
+		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		errorMessageLabel.setForeground(Color.RED);
+		
+		this.add(errorMessageLabel);
+	}
+	
 	///////////////////// OVERRIDDEN METHODS //////////////////////////////////////////
 	
 	/*
@@ -131,6 +147,7 @@ public class TransferView extends JPanel implements ActionListener {
 		if (source.equals(cancelButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
 			manager.welcomeMessage("update");
+			updateErrorMessage("");
 			amountField.setText(null);
 		} else if(source.equals(transferButton)) {
 			BankAccount origin = manager.getBankAccount();
@@ -140,9 +157,15 @@ public class TransferView extends JPanel implements ActionListener {
 				manager.updateAccount(origin);
 				manager.switchTo(ATM.HOME_VIEW);
 				manager.welcomeMessage("update");
+				updateErrorMessage("");
 				amountField.setText(null);
+				destinationField.setText(null);
+			} else if (result == 2) {
+				updateErrorMessage("Account Not Found");
+			} else if (result == 1) {
+				updateErrorMessage("Insufficient Funds");
 			} else {
-				System.out.println("Account Not Found");
+				updateErrorMessage("Invalid Amount");
 			}
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");

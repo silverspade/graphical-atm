@@ -52,8 +52,15 @@ public class ViewManager {
 				welcomeMessage("clear");
 				welcomeMessage("update");
 				lv.clear();
+				sendBankInfo(account);
 			}
 		}
+	}
+	
+	public void sendBankInfo(BankAccount account) {
+		view.InformationView iv = ((view.InformationView) views.getComponents()[ATM.INFORMATION_VIEW_INDEX]);
+		iv.setBankAccount(account);
+		iv.initInfoPortion();
 	}
 	
 	public void welcomeMessage(String method) {

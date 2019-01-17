@@ -26,7 +26,7 @@ public class DepositView extends JPanel implements ActionListener {
 	private JButton depositButton;
 	private JButton cancelButton;
 	private JTextField amountField;
-	//private JLabel errorMessageLabel;
+	private JLabel errorMessageLabel;
 	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -41,9 +41,9 @@ public class DepositView extends JPanel implements ActionListener {
 		initialize();
 	}
 	
-	/*public void updateErrorMessage(String errorMessage) {
+	public void updateErrorMessage(String errorMessage) {
 		errorMessageLabel.setText(errorMessage);
-	}*/
+	}
 	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
 	
@@ -57,7 +57,7 @@ public class DepositView extends JPanel implements ActionListener {
 		initAmountField();
 		initDepositButton();
 		initCancelButton();
-		//initErrorMessageLabel();
+		initErrorMessageLabel();
 	}
 	
 	/*
@@ -107,14 +107,14 @@ public class DepositView extends JPanel implements ActionListener {
 		this.add(amountField);
 	}
 	
-	/*private void initErrorMessageLabel() {
+	private void initErrorMessageLabel() {
 		errorMessageLabel = new JLabel("", SwingConstants.CENTER);
 		errorMessageLabel.setBounds(0, 240, 500, 35);
 		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
 		errorMessageLabel.setForeground(Color.RED);
 		
 		this.add(errorMessageLabel);
-	}*/
+	}
 	
 	///////////////////// OVERRIDDEN METHODS //////////////////////////////////////////
 	
@@ -130,6 +130,7 @@ public class DepositView extends JPanel implements ActionListener {
 		if (source.equals(cancelButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
 			manager.welcomeMessage("update");
+			updateErrorMessage("");
 			amountField.setText(null);
 		} else if(source.equals(depositButton)) {
 			BankAccount account = manager.getBankAccount();
@@ -138,10 +139,10 @@ public class DepositView extends JPanel implements ActionListener {
 				manager.updateAccount(account);
 				manager.switchTo(ATM.HOME_VIEW);
 				manager.welcomeMessage("update");
-				//updateErrorMessage("");
+				updateErrorMessage("");
 				amountField.setText(null);
 			} else {
-				//updateErrorMessage("Invalid Amount");
+				updateErrorMessage("Invalid Amount");
 			}
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");
