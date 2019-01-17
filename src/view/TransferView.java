@@ -149,6 +149,7 @@ public class TransferView extends JPanel implements ActionListener {
 			manager.welcomeMessage("update");
 			updateErrorMessage("");
 			amountField.setText(null);
+			destinationField.setText(null);
 		} else if(source.equals(transferButton)) {
 			BankAccount origin = manager.getBankAccount();
 			BankAccount destination = manager.getAccount(Long.valueOf(destinationField.getText()));

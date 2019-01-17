@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -24,6 +25,7 @@ public class HomeView extends JPanel implements ActionListener {
 	private JButton withdrawButton;
 	private JButton transferButton;
 	private JButton informationButton;
+	private JButton closeButton;
 		
 	private JLabel nameLabel;
 	private JLabel acctNumLabel;
@@ -55,8 +57,7 @@ public class HomeView extends JPanel implements ActionListener {
 		initWithdrawButton();
 		initTransferButton();
 		initInfoButton();
-		// this is where you should build the HomeView (i.e., all the components that
-		// allow the user to interact with the ATM - deposit, withdraw, transfer, etc.).
+		initCloseButton();
 	}
 	
 	private void initLogoutButton() {	
@@ -65,6 +66,14 @@ public class HomeView extends JPanel implements ActionListener {
 		logoutButton.addActionListener(this);
 		
 		this.add(logoutButton);
+	}
+	
+	private void initCloseButton() {	
+		closeButton = new JButton("Close Account");
+		closeButton.setBounds(20, 280, 250, 35);
+		closeButton.addActionListener(this);
+		
+		this.add(closeButton);
 	}
 	
 	private void initDepositButton() {	
@@ -77,7 +86,7 @@ public class HomeView extends JPanel implements ActionListener {
 	
 	private void initWithdrawButton() {	
 		withdrawButton = new JButton("Withdraw");
-		withdrawButton.setBounds(20, 160, 200, 35);
+		withdrawButton.setBounds(20, 130, 200, 35);
 		withdrawButton.addActionListener(this);
 		
 		this.add(withdrawButton);
@@ -85,7 +94,7 @@ public class HomeView extends JPanel implements ActionListener {
 	
 	private void initTransferButton() {	
 		transferButton = new JButton("Transfer");
-		transferButton.setBounds(20, 240, 200, 35);
+		transferButton.setBounds(20, 180, 200, 35);
 		transferButton.addActionListener(this);
 		
 		this.add(transferButton);
@@ -93,7 +102,7 @@ public class HomeView extends JPanel implements ActionListener {
 	
 	private void initInfoButton() {	
 		informationButton = new JButton("View/Edit Personal Information");
-		informationButton.setBounds(20, 320, 250, 35);
+		informationButton.setBounds(20, 230, 250, 35);
 		informationButton.addActionListener(this);
 		
 		this.add(informationButton);
@@ -156,8 +165,20 @@ public class HomeView extends JPanel implements ActionListener {
 		} else if (source.equals(transferButton)) {
 			manager.switchTo(ATM.TRANSFER_VIEW);
 		} else if (source.equals(logoutButton)){
-			manager.welcomeMessage("clear");
-			manager.switchTo(ATM.LOGIN_VIEW); 
+			if (manager.confirm() == 1) {
+				manager.switchTo(ATM.LOGIN_VIEW);
+				manager.welcomeMessage("clear");
+			} 
+		} else if (source.equals(closeButton)) {
+			if (manager.confirm() == 1) {
+				manager.switchTo(ATM.LOGIN_VIEW);
+				manager.welcomeMessage("clear");
+				if (manager.closeAccount(manager.getBankAccount()) == true) {
+					System.out.println("Closing successful");
+				} else {
+					System.out.println("Closing unsuccessful");
+				}
+			} 
 		} else if (source.equals(informationButton)) {
 			manager.switchTo(ATM.INFORMATION_VIEW);
 		} else {

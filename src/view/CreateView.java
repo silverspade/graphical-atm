@@ -144,7 +144,7 @@ public class CreateView extends JPanel implements ActionListener {
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		String[] days = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
-		String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "12", "12"};
+		String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
 		String[] years = new String[120];
 		int startYear = 1900;
 		for (int i = 0; i <= 119; i++) {

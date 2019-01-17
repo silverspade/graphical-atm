@@ -109,6 +109,22 @@ public class ViewManager {
 		}
 	}	
 	
+	public int confirm() {
+		int choice = JOptionPane.showConfirmDialog(
+				views,
+				"Are you sure?",
+				"Confirm choice",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE
+			);
+			
+			if (choice == 0) {
+				return 1;
+			} else {
+				return -1;
+			}
+	}	
+	
 	public BankAccount getBankAccount() {
 		return account;
 	}
@@ -119,5 +135,9 @@ public class ViewManager {
 	
 	public BankAccount getAccount(long accountNumber) {
 		return db.getAccount(accountNumber);
+	}
+	
+	public boolean closeAccount(BankAccount account) {
+		return db.closeAccount(account);
 	}
 }
