@@ -151,22 +151,32 @@ public class TransferView extends JPanel implements ActionListener {
 			amountField.setText(null);
 			destinationField.setText(null);
 		} else if(source.equals(transferButton)) {
-			BankAccount origin = manager.getBankAccount();
-			BankAccount destination = manager.getAccount(Long.valueOf(destinationField.getText()));
-			int result = origin.transfer(destination, Double.valueOf(amountField.getText()));
-			if (result == 3) {
-				manager.updateAccount(origin);
-				manager.switchTo(ATM.HOME_VIEW);
-				manager.welcomeMessage("update");
-				updateErrorMessage("");
-				amountField.setText(null);
-				destinationField.setText(null);
-			} else if (result == 2) {
-				updateErrorMessage("Account Not Found");
-			} else if (result == 1) {
-				updateErrorMessage("Insufficient Funds");
+			if (amountField.getText().length() == 0) {
+				updateErrorMessage("Please put in an amount");
+			} else if (destinationField.getText().length() == 0) {
+				updateErrorMessage("Please enter an account number");
+			} else if (manager.containsOnlyNumbers(amountField.getText()) == true) {
+				BankAccount origin = manager.getBankAccount();
+				BankAccount destination = manager.getAccount(Long.valueOf(destinationField.getText()));
+				int result = origin.transfer(destination, Double.valueOf(amountField.getText()));
+				if (result == 3) {
+					System.out.println("Transferring...");
+					manager.updateAccount(origin);
+					manager.switchTo(ATM.HOME_VIEW);
+					manager.welcomeMessage("update");
+					updateErrorMessage("");
+					amountField.setText(null);
+					destinationField.setText(null);
+					System.out.println("Transferred!");
+				} else if (result == 2) {
+					updateErrorMessage("Account Not Found");
+				} else if (result == 1) {
+					updateErrorMessage("Insufficient Funds");
+				} else {
+					updateErrorMessage("Invalid Amount: Negative or 0");
+				}
 			} else {
-				updateErrorMessage("Invalid Amount");
+				updateErrorMessage("Invalid Amount: Non-numeric");
 			}
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");

@@ -134,15 +134,23 @@ public class DepositView extends JPanel implements ActionListener {
 			amountField.setText(null);
 		} else if(source.equals(depositButton)) {
 			BankAccount account = manager.getBankAccount();
-			int result = account.deposit(Double.valueOf(amountField.getText()));
-			if (result == 3) {
-				manager.updateAccount(account);
-				manager.switchTo(ATM.HOME_VIEW);
-				manager.welcomeMessage("update");
-				updateErrorMessage("");
-				amountField.setText(null);
+			if (amountField.getText().length() == 0) {
+				updateErrorMessage("Please put in an amount");
+			} else if (manager.containsOnlyNumbers(amountField.getText()) == true) {
+				int result = account.deposit(Double.valueOf(amountField.getText()));
+				if (result == 3) {
+					System.out.println("Depositing...");
+					manager.updateAccount(account);
+					manager.switchTo(ATM.HOME_VIEW);
+					manager.welcomeMessage("update");
+					updateErrorMessage("");
+					amountField.setText(null);
+					System.out.println("Deposited!");
+				} else {
+					updateErrorMessage("Invalid Amount: Negative or 0");
+				}
 			} else {
-				updateErrorMessage("Invalid Amount");
+				updateErrorMessage("Invalid Amount: Non-numeric");
 			}
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");

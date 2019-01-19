@@ -46,6 +46,8 @@ public class ViewManager {
 			account = db.getAccount(Long.valueOf(accountNumber), Integer.valueOf(new String(pin)));
 			if (account == null) {
 				lv.updateErrorMessage("Invalid account number and/or PIN.");
+			} else if (account.getStatus() == 'N') {
+				lv.updateErrorMessage("Account Closed");
 			} else {
 				switchTo(ATM.HOME_VIEW);
 				welcomeMessage("init");
@@ -53,6 +55,8 @@ public class ViewManager {
 				welcomeMessage("update");
 				lv.clear();
 				refreshBankInfo(account);
+				lv.updateErrorMessage("");
+				System.out.println("Logged in!");
 			}
 		}
 	}
@@ -147,4 +151,16 @@ public class ViewManager {
 	public boolean closeAccount(BankAccount account) {
 		return db.closeAccount(account);
 	}
+	
+	public boolean containsOnlyNumbers(String str) {        
+        if (str == null || str.length() == 0)
+            return false;
+
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i)))
+                return false;
+        }
+
+        return true;
+    }
 }

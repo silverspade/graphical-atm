@@ -278,7 +278,7 @@ public class User {
 	 * @return true if the PIN is valid; false otherwise.
 	 */
 	
-	private boolean isValidPin(int pin, int current) {
+	public boolean isValidPin(int pin, int current) {
 		if (pin < 0 || pin > 9999) {
 			return false;
 		}

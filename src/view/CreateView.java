@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,8 +26,7 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
 	
-	private final static String SUBMIT = "Submit";
-	private final static String CANCEL = "Cancel";
+	private JLabel errorMessageLabel;		
 		
 	private JPasswordField pinField;
 	private JTextField lastNameField;
@@ -58,7 +58,12 @@ public class CreateView extends JPanel implements ActionListener {
 		super();
 		
 		this.manager = manager;
+		this.errorMessageLabel = new JLabel("", SwingConstants.CENTER);
 		initialize();
+	}
+	
+	public void updateErrorMessage(String errorMessage) {
+		errorMessageLabel.setText(errorMessage);
 	}
 	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
@@ -81,6 +86,7 @@ public class CreateView extends JPanel implements ActionListener {
 		initZipField();
 		initSubmitButton();
 		initCancelButton();
+		initErrorMessageLabel();
 	}
 	
 	/*
@@ -263,6 +269,15 @@ public class CreateView extends JPanel implements ActionListener {
 		this.add(cancelButton);
 	}
 	
+	private void initErrorMessageLabel() {
+		errorMessageLabel = new JLabel("", SwingConstants.CENTER);
+		errorMessageLabel.setBounds(10, 15, 500, 35); 
+		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		errorMessageLabel.setForeground(Color.RED);
+		
+		this.add(errorMessageLabel);
+	}
+	
 	///////////////////// OVERRIDDEN METHODS //////////////////////////////////////////
 	
 	/*
@@ -273,18 +288,28 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (e.getActionCommand()) {
-			case SUBMIT:
-				//POSSIBLY ADD IN A CHECKING METHOD
+		Object source = e.getSource();
+		if (source.equals(submitButton)) {
+			if (pinField.getText().length() != 4) {
+				updateErrorMessage("Invalid PIN");
+			} else if (firstPhone.getText().length() != 3 || secondPhone.getText().length() != 3 || thirdPhone.getText().length() != 4) {
+				updateErrorMessage("Invalid phone number");
+			} else if (zipField.getText().length() != 5) {
+				updateErrorMessage("Invalid zip code");
+			} else if (firstNameField.getText().length() == 0 || lastNameField.getText().length() == 0  || streetField.getText().length() == 0  || cityField.getText().length() == 0) {
+				updateErrorMessage("Make sure all fields are filled");
+			} else {
+				System.out.println("Creating...");
 				createdUser = new User(Integer.valueOf(String.valueOf(pinField.getPassword())), Integer.valueOf(String.valueOf(yearsField.getSelectedItem()) + String.valueOf(monthsField.getSelectedItem()) + String.valueOf(daysField.getSelectedItem())), Long.valueOf(firstPhone.getText() + secondPhone.getText() + thirdPhone.getText()), firstNameField.getText(), lastNameField.getText(), streetField.getText(), cityField.getText(), String.valueOf(stateField.getSelectedItem()), zipField.getText());
 				System.out.println(createdUser.toString());
 				manager.switchTo(ATM.LOGIN_VIEW);
 				createdBank = new BankAccount('Y', manager.getNextAccountNumber(), 0.00, createdUser);
 				System.out.println(createdBank.toString());
+				System.out.println("Created!\nInserting...");
 				manager.insertNewAccount(createdBank);
-				System.out.println("Insert successful");
-				break;
-			case CANCEL:
+				System.out.println("Inserted!");
+				updateErrorMessage("");
+				
 				pinField.setText(null);
 				lastNameField.setText(null);
 				firstNameField.setText(null);
@@ -298,9 +323,25 @@ public class CreateView extends JPanel implements ActionListener {
 				cityField.setText(null);
 				stateField.setSelectedIndex(0);
 				zipField.setText(null);
-				manager.switchTo(ATM.LOGIN_VIEW);
-				break;
-			default: System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); break;
+			}
+		} else if (source.equals(cancelButton)) {
+			pinField.setText(null);
+			lastNameField.setText(null);
+			firstNameField.setText(null);
+			daysField.setSelectedIndex(0);
+			monthsField.setSelectedIndex(0);
+			yearsField.setSelectedIndex(0);
+			firstPhone.setText(null);
+			secondPhone.setText(null);
+			thirdPhone.setText(null);
+			streetField.setText(null);
+			cityField.setText(null);
+			stateField.setSelectedIndex(0);
+			zipField.setText(null);
+			manager.switchTo(ATM.LOGIN_VIEW);
+			updateErrorMessage("");
+		} else {
+			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");
 		}
 	}
 }

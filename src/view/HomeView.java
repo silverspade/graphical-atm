@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 
 import controller.ViewManager;
 import model.BankAccount;
+import java.text.DecimalFormat;
 
 @SuppressWarnings("serial")
 public class HomeView extends JPanel implements ActionListener {
@@ -109,6 +110,7 @@ public class HomeView extends JPanel implements ActionListener {
 	}
 	
 	public void welcomeMessage(String method) {
+		DecimalFormat money = new DecimalFormat("$###,##0.00");
 		if (method.equals("init")) {
 			String nameMessage = "Welcome " + manager.getBankAccount().getUser().getName();
 			nameLabel = new JLabel(nameMessage, SwingConstants.LEFT);
@@ -118,13 +120,13 @@ public class HomeView extends JPanel implements ActionListener {
 			acctNumLabel = new JLabel(accountNumMessage, SwingConstants.LEFT);
 			acctNumLabel.setBounds(20, 20, 200, 35);
 			
-			String balanceMessage = "Current Balance: " + manager.getBankAccount().getBalance();
+			String balanceMessage = "Current Balance: " + money.format(manager.getBankAccount().getBalance());
 			balanceLabel = new JLabel(balanceMessage, SwingConstants.LEFT);
 			balanceLabel.setBounds(20, 35, 200, 35);
 		} else if (method.equals("update")) {
 			nameLabel.setText("Welcome " + manager.getBankAccount().getUser().getName());
 			acctNumLabel.setText("Account Number: " + manager.getBankAccount().getAccountNumber());
-			balanceLabel.setText("Current Balance: " + manager.getBankAccount().getBalance());
+			balanceLabel.setText("Current Balance: " + money.format(manager.getBankAccount().getBalance()));
 		} else {
 			nameLabel.setText("");
 			acctNumLabel.setText("");
@@ -169,11 +171,12 @@ public class HomeView extends JPanel implements ActionListener {
 		} else if (source.equals(closeButton)) {
 			if (manager.confirm() == 1) {
 				manager.switchTo(ATM.LOGIN_VIEW);
+				System.out.println("Closing account...");
 				manager.welcomeMessage("clear");
 				if (manager.closeAccount(manager.getBankAccount()) == true) {
-					System.out.println("Closing successful");
+					System.out.println("Closed!");
 				} else {
-					System.out.println("Closing unsuccessful");
+					System.out.println("Error occurred while closing");
 				}
 			} 
 		} else if (source.equals(informationButton)) {

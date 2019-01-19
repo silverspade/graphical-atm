@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +43,8 @@ public class InformationView extends JPanel implements ActionListener {
 	private JButton saveButton;
 	private JButton cancelButton;
 	
+	private JLabel errorMessageLabel;		
+	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
@@ -52,7 +55,12 @@ public class InformationView extends JPanel implements ActionListener {
 		super();
 		
 		this.manager = manager;
+		this.errorMessageLabel = new JLabel("", SwingConstants.CENTER);
 		initialize();
+	}
+	
+	public void updateErrorMessage(String errorMessage) {
+		errorMessageLabel.setText(errorMessage);
 	}
 	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
@@ -69,6 +77,7 @@ public class InformationView extends JPanel implements ActionListener {
 		initSaveButton();
 		initCancelButton();
 		initInfoPortion();
+		initErrorMessageLabel();
 		saveButton.setVisible(false);
 		cancelButton.setVisible(false);
 	}
@@ -310,6 +319,15 @@ public class InformationView extends JPanel implements ActionListener {
 		this.add(cancelButton);
 	}
 	
+	private void initErrorMessageLabel() {
+		errorMessageLabel = new JLabel("", SwingConstants.CENTER);
+		errorMessageLabel.setBounds(120, 240, 500, 35);
+		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		errorMessageLabel.setForeground(Color.RED);
+		
+		this.add(errorMessageLabel);
+	}
+	
 //	public void setBankAccount(BankAccount setAccount) {
 //		this.account = setAccount;
 //	}
@@ -366,47 +384,56 @@ public class InformationView extends JPanel implements ActionListener {
 			saveButton.setVisible(false);
 			backButton.setVisible(true);
 			cancelButton.setVisible(false);
+			updateErrorMessage("");
 		} else if (source.equals(backButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
 		}
 		else if (source.equals(saveButton)) {
-			System.out.println("Saving...");
-			manager.getBankAccount().getUser().setPin(manager.getBankAccount().getUser().getPin(), Integer.valueOf(pinField.getText()));
-			//Can add error message for if it was not valid and didn't changed
-			manager.getBankAccount().getUser().setPhone(Long.valueOf(phoneField.getText()));
-			manager.getBankAccount().getUser().setStreetAddress(streetField.getText());
-			manager.getBankAccount().getUser().setCity(cityField.getText());
-			manager.getBankAccount().getUser().setState(String.valueOf(stateDropdown.getSelectedItem()));
-			manager.getBankAccount().getUser().setZip(zipField.getText());
-			manager.updateAccount(manager.getBankAccount());
-			System.out.println("Saved");
-			pinField.setText(Integer.toString(manager.getBankAccount().getUser().getPin()));
-			pinField.setEditable(false);
-			accountNumField.setText(Long.toString(manager.getBankAccount().getAccountNumber()));
-			accountNumField.setEditable(false);
-			lastNameField.setText(manager.getBankAccount().getUser().getLastName());
-			lastNameField.setEditable(false);
-			firstNameField.setText(manager.getBankAccount().getUser().getFirstName());
-			firstNameField.setEditable(false);
-			birthField.setText(Integer.toString(manager.getBankAccount().getUser().getDob()));
-			birthField.setEditable(false);
-			phoneField.setText(Long.toString(manager.getBankAccount().getUser().getPhone()));
-			phoneField.setEditable(false);
-			streetField.setText(manager.getBankAccount().getUser().getStreetAddress());
-			streetField.setEditable(false);
-			cityField.setText(manager.getBankAccount().getUser().getCity());
-			cityField.setEditable(false);
-			stateField.setText(manager.getBankAccount().getUser().getState());
-			stateField.setEditable(false);
-			zipField.setText(manager.getBankAccount().getUser().getZip());
-			zipField.setEditable(false);
-			stateDropdown.setVisible(false);
-			stateField.setVisible(true);
-			
-			editButton.setVisible(true);
-			saveButton.setVisible(false);
-			backButton.setVisible(true);
-			cancelButton.setVisible(false);
+			if (manager.getBankAccount().getUser().isValidPin(Integer.valueOf(pinField.getText()), manager.getBankAccount().getUser().getPin()) == false) {
+				updateErrorMessage("Invalid PIN");
+			} else if (phoneField.getText().length() != 10 || manager.containsOnlyNumbers(phoneField.getText()) == false) {
+				updateErrorMessage("Invalid phone");
+			} else if (zipField.getText().length() != 5) {
+				updateErrorMessage("Invalid zip code");
+			} else {
+				System.out.println("Saving...");
+				manager.getBankAccount().getUser().setPin(manager.getBankAccount().getUser().getPin(), Integer.valueOf(pinField.getText()));
+				manager.getBankAccount().getUser().setPhone(Long.valueOf(phoneField.getText()));
+				manager.getBankAccount().getUser().setStreetAddress(streetField.getText());
+				manager.getBankAccount().getUser().setCity(cityField.getText());
+				manager.getBankAccount().getUser().setState(String.valueOf(stateDropdown.getSelectedItem()));
+				manager.getBankAccount().getUser().setZip(zipField.getText());
+				manager.updateAccount(manager.getBankAccount());
+				System.out.println("Saved!");
+				pinField.setText(Integer.toString(manager.getBankAccount().getUser().getPin()));
+				pinField.setEditable(false);
+				accountNumField.setText(Long.toString(manager.getBankAccount().getAccountNumber()));
+				accountNumField.setEditable(false);
+				lastNameField.setText(manager.getBankAccount().getUser().getLastName());
+				lastNameField.setEditable(false);
+				firstNameField.setText(manager.getBankAccount().getUser().getFirstName());
+				firstNameField.setEditable(false);
+				birthField.setText(Integer.toString(manager.getBankAccount().getUser().getDob()));
+				birthField.setEditable(false);
+				phoneField.setText(Long.toString(manager.getBankAccount().getUser().getPhone()));
+				phoneField.setEditable(false);
+				streetField.setText(manager.getBankAccount().getUser().getStreetAddress());
+				streetField.setEditable(false);
+				cityField.setText(manager.getBankAccount().getUser().getCity());
+				cityField.setEditable(false);
+				stateField.setText(manager.getBankAccount().getUser().getState());
+				stateField.setEditable(false);
+				zipField.setText(manager.getBankAccount().getUser().getZip());
+				zipField.setEditable(false);
+				stateDropdown.setVisible(false);
+				stateField.setVisible(true);
+				
+				editButton.setVisible(true);
+				saveButton.setVisible(false);
+				backButton.setVisible(true);
+				cancelButton.setVisible(false);
+				updateErrorMessage("");
+			}
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); 
 		}

@@ -213,10 +213,14 @@ public class LoginView extends JPanel implements ActionListener {
 		
 		switch (e.getActionCommand()) {
 			case LOGIN: 
+				System.out.println("Logging in...");
 				manager.login(accountField.getText(), pinField.getPassword());
 				break;
 			case CREATE: 
 				manager.switchTo(ATM.CREATE_VIEW); 
+				accountField.setText(null);
+				pinField.setText(null);
+				updateErrorMessage("");
 				break;
 			default: System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")"); break;
 		}
