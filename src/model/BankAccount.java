@@ -153,6 +153,8 @@ public class BankAccount {
 	public int transfer(BankAccount destination, double amount) {
 		if (destination == null) {
 			return ATM.ACCOUNT_NOT_FOUND;
+		} else if (destination.getStatus() == 'N') {
+			return ATM.ACCOUNT_NOT_FOUND;
 		} else {
 			int status = this.withdraw(amount);
 			
